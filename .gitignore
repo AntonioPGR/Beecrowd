@@ -1,7 +1,7 @@
 *.d
 .vscode/
-# *.ps1
-# *.sh
+*.ps1
+*.sh
 *.slo
 *.lo
 *.o
