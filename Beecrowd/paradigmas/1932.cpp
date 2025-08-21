@@ -2,34 +2,28 @@
 
 using namespace std;
 
-int n, c;
-vector<int> prices;
-vector<vector<int>> memo;
-
-int calculate(int cur_day, int bough_day, int n, int total_profit){
-  int next_day = cur_day + 1;
-  if(cur_day == n) return total_profit;
-
-  
-
-  if(bough_day == -1) return max(
-    calculate(next_day, cur_day, n, (total_profit - prices[cur_day] - c )), // COMPRAR
-    calculate(next_day, bough_day, n, total_profit) // ESPERAR
-  );
-
-  return max(
-    calculate(next_day, -1, n, (total_profit + prices[cur_day])), // VENDER
-    calculate(next_day, bough_day, n, total_profit) // ESPERAR
-  );
-}
 
 int main(){
 
+  int n, c;
   cin >> n >> c;
-  prices.resize(n);
-  for(int i = 0; i < n; i++) cin >> prices[i];
 
-  memo = vector<vector<int>>(n, vector<int>(n, -1));
+  vector<int> values(n);
+  for(int i = 0; i < n; i++) cin >> values[i];
 
-  cout << calculate(0, -1, n, 0) << endl;
+  vector<vector<int>> dp(n+1, vector<int>(2, 0));
+
+  for(int day = n - 1; day >= 0; day--){
+    dp[day][0] = max(
+      dp[day + 1][1] - c - values[day],
+      dp[day + 1][0]
+    );
+    dp[day][1] = max(
+      dp[day + 1][0] + values[day],
+      dp[day + 1][1]
+    );
+  }
+
+  cout << dp[0][0] << endl;
+
 }

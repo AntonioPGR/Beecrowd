@@ -1,24 +1,32 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int main(){
-  string str;
-  while(getline(cin, str)){
-    char current_letter = 32;
+
+  string line;
+  while(getline(cin, line)){
+    
+    stringstream ss(line);
+    string word;
     int count = 0;
-    for(int i = 0; i < str.size(); i++){
-      if(i == 0){
-        current_letter = tolower(str.at(0));
-      } else if(str.at(i-1) == 32){
-        if(tolower(str.at(i)) == tolower(current_letter)){
-          count++;
-          current_letter = 32;
-        } else {
-          current_letter = tolower(str.at(i));
-        }
+    char last_letter = ' ';
+    char last_considered = ' ';
+    while(ss >> word){
+      char cur_letter = tolower(word[0]);
+      if(last_letter == ' ' || last_letter != cur_letter){
+        last_letter = cur_letter;
+        last_considered = ' ';
+        continue;
+      }
+      if(last_letter == cur_letter && last_considered == ' '){
+        last_considered = cur_letter;
+        count++;
       }
     }
+
     cout << count << endl;
   }
+
+  return 0;
 }
